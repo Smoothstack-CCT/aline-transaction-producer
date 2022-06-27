@@ -3,7 +3,7 @@ import { LoggerUtil } from './util/logger.util';
 
 const app = express();
 const port = 8888;
-const log = LoggerUtil.getLogger('Typescript express app');
+const log = LoggerUtil.getLogger('Transaction Generator');
 
 
 // API endpoints

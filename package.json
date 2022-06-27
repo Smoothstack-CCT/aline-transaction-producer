@@ -1,7 +1,7 @@
 {
-  "name": "typescript-express-app-template",
+  "name": "aline-transaction-generator",
   "version": "0.1.0",
-  "description": "Typescript express app template",
+  "description": "Generate realistic bank account transactions for the Aline Financial REST API",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
