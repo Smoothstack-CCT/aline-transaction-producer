@@ -8,7 +8,7 @@ export interface CreateTransaction {
     merchantCode: string;
     merchantName: string;
     description: string;
-    cardRequest: CardRequest;
-    accountNumber: string;
-    hold: boolean;
+    cardRequest?: CardRequest;
+    accountNumber?: string;
+    hold?: boolean;
 }

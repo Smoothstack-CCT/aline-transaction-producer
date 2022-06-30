@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { router } from './app';
 import { LoggerUtil } from './util/logger.util';
 
 const app = express();
@@ -7,10 +8,7 @@ const log = LoggerUtil.getLogger('Transaction Generator');
 
 
 // API endpoints
-app.get('/', function(req: Request, res: Response) {
-    res.send('Transaction Generator');
-});
-
+app.use(router);
 
 // Start server
 app.listen(port, () => {
