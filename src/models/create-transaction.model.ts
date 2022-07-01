@@ -1,13 +1,14 @@
 import { CardRequest } from "./card-request.model";
+import { TransactionMethod, TransactionType } from "./transaction.types";
 
 export interface CreateTransaction {
-    type: 'DEPOSIT' | 'WITHDRAWAL' | 'PURCHASE' | 'PAYMENT' | 'REFUND';
-    method: 'ACH' | 'ATM' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'APP';
-    date: Date;
+    type: TransactionType;
+    method: TransactionMethod;
+    date?: Date;
     amount: number;
-    merchantCode: string;
-    merchantName: string;
-    description: string;
+    merchantCode?: string;
+    merchantName?: string;
+    description?: string;
     cardRequest?: CardRequest;
     accountNumber?: string;
     hold?: boolean;

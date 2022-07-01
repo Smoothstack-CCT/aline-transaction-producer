@@ -1,41 +1,51 @@
 import { TransactionService } from "./transaction.service";
-import { environment } from "../environment";
 
 export class AchTransactionService extends TransactionService {
 
-    async deposit(accountNumber: string, amount: number, date?: Date) {
-        return await this.createTransaction(environment.serviceHost, {
+    constructor(serviceHost: string, private accountNumber: string) {
+        super(serviceHost);
+    }
+
+    async deposit(options: {amount: number, date: Date}) {
+        return await this.createTransaction({
+            accountNumber: this.accountNumber,
             type: "DEPOSIT",
             method: "ACH",
-            date: date ? date : new Date(),
-            amount: 0,
+            ...options,
             merchantCode: "ALINE",
             merchantName: "Aline Financial",
             description: "Electronic deposit"
         });
     }
 
-    async payBill(accountNumber: string, amount: number, billerCode: string, billerName: string, date?: Date) {
-        return await this.createTransaction(environment.serviceHost, {
+    async payBill({ date, ...options}: { amount: number; billerCode: string; billerName: string; date?: Date; }) {
+        return await this.createTransaction({
+            accountNumber: this.accountNumber,
             type: "PAYMENT",
             method: "ACH",
             date: date ? date : new Date(),
-            amount: amount,
-            merchantCode: billerCode,
-            merchantName: billerName,
+            ...options,
             description: "Bill payment"
         });
     }
+    
 
-    async withdraw(accountNumber: string, amount: number, date?: Date) {
-        return await this.createTransaction(environment.serviceHost, {
+    async withdraw(options: {amount: number, date: Date}) {
+        return await this.createTransaction({
+            accountNumber: this.accountNumber,
             type: "WITHDRAWAL",
             method: "ACH",
-            date: date ? date : new Date(),
-            amount: amount,
-            merchantCode: "ALINE",
-            merchantName: "Aline Financial",
+            ...options,
             description: "Withdrawal"
+        });
+    }
+
+    async purchase(options: { amount: number; merchantName: string; merchantCode: string; description: string; date: Date; }) {
+        return await this.createTransaction({
+            accountNumber: this.accountNumber,
+            type: "PURCHASE",
+            method: "ACH",
+            ...options
         });
     }
 
