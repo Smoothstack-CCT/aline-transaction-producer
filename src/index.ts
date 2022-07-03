@@ -9,6 +9,7 @@ const log = LoggerUtil.getLogger('Transaction Generator');
 
 // API endpoints
 app.use(router);
+app.use(express.static('src/public'));
 
 // Start server
 app.listen(port, () => {

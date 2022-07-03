@@ -7,8 +7,8 @@ export class DebitTransactionService extends TransactionService {
         super(serviceHost);
     }
 
-    async deposit({ amount, date }: { amount: number; date?: Date | undefined; }) {
-        return await this.createTransaction({
+    deposit({ amount, date }: { amount: number; date?: Date | undefined; }) {
+        return this.createTransaction({
             cardRequest: this.cardRequest,
             amount: amount,
             method: 'DEBIT_CARD',
@@ -19,8 +19,8 @@ export class DebitTransactionService extends TransactionService {
             description: 'Debit card deposit'
         });
     }
-    async withdraw(options: { amount: number; date?: Date | undefined; }) {
-        return await this.createTransaction({
+    withdraw(options: { amount: number; date?: Date | undefined; }) {
+        return this.createTransaction({
             cardRequest: this.cardRequest,
             method: 'DEBIT_CARD',
             type: 'WITHDRAWAL',
@@ -29,8 +29,8 @@ export class DebitTransactionService extends TransactionService {
         });
     }
     
-    async payBill(options: { amount: number; billerCode: string; billerName: string; date?: Date | undefined; }) {
-        return await this.createTransaction({
+    async payBill(options: { amount: number; merchantCode: string; merchantName: string; date?: Date | undefined; }) {
+        return this.createTransaction({
             cardRequest: this.cardRequest,
             method: 'DEBIT_CARD',
             type: 'PAYMENT',
@@ -40,7 +40,7 @@ export class DebitTransactionService extends TransactionService {
     }
 
     async purchase(options: { amount: number; merchantName: string; merchantCode: string; description: string; date?: Date | undefined; }) {
-        return await this.createTransaction({
+        return this.createTransaction({
             cardRequest: this.cardRequest,
             method: 'DEBIT_CARD',
             type: 'PURCHASE',

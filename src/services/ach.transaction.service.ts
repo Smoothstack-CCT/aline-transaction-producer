@@ -1,3 +1,4 @@
+import { AxiosTransactionPromise } from "../models/transaction.types";
 import { TransactionService } from "./transaction.service";
 
 export class AchTransactionService extends TransactionService {
@@ -6,8 +7,8 @@ export class AchTransactionService extends TransactionService {
         super(serviceHost);
     }
 
-    async deposit(options: {amount: number, date: Date}) {
-        return await this.createTransaction({
+    deposit(options: {amount: number, date: Date}) {
+        return this.createTransaction({
             accountNumber: this.accountNumber,
             type: "DEPOSIT",
             method: "ACH",
@@ -18,8 +19,8 @@ export class AchTransactionService extends TransactionService {
         });
     }
 
-    async payBill({ date, ...options}: { amount: number; billerCode: string; billerName: string; date?: Date; }) {
-        return await this.createTransaction({
+    payBill({ date, ...options}: { amount: number; merchantCode: string; merchantName: string; date?: Date; }) {
+        return this.createTransaction({
             accountNumber: this.accountNumber,
             type: "PAYMENT",
             method: "ACH",
@@ -30,8 +31,8 @@ export class AchTransactionService extends TransactionService {
     }
     
 
-    async withdraw(options: {amount: number, date: Date}) {
-        return await this.createTransaction({
+    withdraw(options: {amount: number, date: Date}) {
+        return this.createTransaction({
             accountNumber: this.accountNumber,
             type: "WITHDRAWAL",
             method: "ACH",
@@ -40,8 +41,8 @@ export class AchTransactionService extends TransactionService {
         });
     }
 
-    async purchase(options: { amount: number; merchantName: string; merchantCode: string; description: string; date: Date; }) {
-        return await this.createTransaction({
+    purchase(options: { amount: number; merchantName: string; merchantCode: string; description: string; date: Date; }) {
+        return this.createTransaction({
             accountNumber: this.accountNumber,
             type: "PURCHASE",
             method: "ACH",
