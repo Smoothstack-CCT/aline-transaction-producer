@@ -60,8 +60,8 @@ export class GeneratorService {
                 dueDay: 28
             },
             {
-                biller: 'Cars For Lease',
-                billerCode: 'CARSFL',
+                biller: 'Used Cars For Lease',
+                billerCode: 'USEDCARS',
                 amount: 25525,
                 dueDay: 28
             }
@@ -118,7 +118,6 @@ export class GeneratorService {
         this.log.info(`\t\tPAID:\t\t\t${this.formatCurrency(paycheck)}`);
         this.log.info(`\t\tBILLS:\t\t\t${this.formatCurrency(billsAmount)}`);
         this.log.info(`\t\tPURCHASES:\t\t${this.formatCurrency(purchasesTotal)}`);
-
         this.log.info('\tEnd of Summary');
         this.log.info('------------------------------------------------------------------');
         this.log.info('');
