@@ -23,7 +23,7 @@ export class RandomDataUtil {
         { merchantCode: 'HOMDEPOT', merchantName: 'Home Depot', merchantType: 'STORE' },
         { merchantCode: 'APPLAPP', merchantName: 'Apple App Store', merchantType: 'ONLINE' },
         { merchantCode: 'GOOGPLY', merchantName: 'Google Play Store', merchantType: 'ONLINE' },
-        { merchantCode: 'STEAM', merchantName: 'STEAM', merchantType: 'ONLINE' },
+        { merchantCode: 'STEAM', merchantName: 'Steam', merchantType: 'ONLINE' },
         { merchantCode: 'COSTCO', merchantName: 'Costco', merchantType: 'ONLINE' }
     ]
 

@@ -4,6 +4,7 @@ import { TransactionType } from '../models/transaction.types';
 import { TransactionService } from "./transaction.service";
 import { RandomDataUtil } from '../util/random-data.util';
 import { LoggerUtil } from '../util/logger.util';
+import { TransactionServices } from '../models/transaction-services';
 
 
 export class GeneratorService {
@@ -70,7 +71,7 @@ export class GeneratorService {
 
     nextPayday = new Date();
 
-    constructor(private transactionServices: TransactionService[], private dataUtil: RandomDataUtil) {} 
+    constructor(private transactionServices: TransactionServices, private dataUtil: RandomDataUtil) {} 
     
     async generateTransactions(startingDate: Date, daysToSimulate: number) {
 
@@ -93,14 +94,24 @@ export class GeneratorService {
         if (isPayday) {
             const { data } = await this.doPayday(date);
             paycheck = data.amount;
+
+            const savingsAmount = paycheck * .2;
+
             this.nextPayday = dayjs(this.nextPayday).add(2, 'week').toDate();
+
+            if (this.transactionServices.achService.hasSavings) {
+                this.transactionServices.achService.transferToSavings({
+                    amount: savingsAmount,
+                    date
+                });
+            }
         }
 
         const billsAmount = await this.doPayBills(date);
 
         let purchasesTotal = 0;
         // Do purchases
-        for (let i = 0; i < this.getRandomNum(2, 10); i++) {
+        for (let i = 0; i < this.getRandomNum(0, 7); i++) {
             try {
                 const { data } = await this.doPurchase(date);
                 purchasesTotal += data.amount;
@@ -127,7 +138,7 @@ export class GeneratorService {
     async doPayday(date: Date) {
         const service = this.randomTransactionService;
 
-        const paycheck = this.getRandomNum(250000, 500000);
+        const paycheck = this.getRandomNum(150000, 250000);
         this.log.info(`Depositing paycheck ${this.formatCurrency(paycheck)} on ${dayjs(date).format('MM/DD/YYYY')}...`);
 
         return service.deposit({
@@ -170,7 +181,8 @@ export class GeneratorService {
     }
 
     get randomTransactionService(): TransactionService {
-        return this.transactionServices[Math.floor(Math.random() * this.transactionServices.length)];
+        const services = Object.values<TransactionService>(this.transactionServices);
+        return services[Math.floor(Math.random() * services.length)];
     }
 
     getRandomNum(min: number, max: number): number {
@@ -180,6 +192,5 @@ export class GeneratorService {
     formatCurrency(cents: number) {
         return this.currencyFormatter.format(cents/100);
     }
-
 
 }

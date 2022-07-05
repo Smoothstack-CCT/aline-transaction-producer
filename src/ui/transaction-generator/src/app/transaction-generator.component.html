@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="card col-12 col-lg-5 mx-auto my-5 p-2">
+      <div class="card-body">
+        <h4 class="card-title text-primary">Aline Financial Transaction Generator</h4>
+        <div class="w-100 bg-primary my-3" [style]="{ height: '0.15em' }"></div>
+        <p class="card-text mb-2 small text-secondary">
+          Please the member's account and card information to generate transactions for them.
+        </p>
+        <div class="form-floating my-2">
+          <input id="startDate"
+                 class="form-control"
+                 type="date"
+                 placeholder="Start Date"
+                 [(ngModel)]="generateRequest.startDate"
+                 required
+                 [disabled]="generating"
+                 />
+          <label for="accountNumber" class="form-label required">Start Date</label>
+        </div>
+        <div class="form-floating my-2">
+          <input id="accountNumber"
+                 class="form-control"
+                 type="text"
+                 placeholder="Account Number"
+                 [(ngModel)]="generateRequest.accountNumber"
+                 required
+                 [disabled]="generating"
+                 />
+          <label for="accountNumber" class="form-label required">Account Number</label>
+        </div>
+        <div class="form-floating my-2">
+          <input id="savingsAccountNumber"
+                 class="form-control"
+                 type="text"
+                 placeholder="Savings Account Number"
+                 [(ngModel)]="generateRequest.savingsAccountNumber"
+                 [disabled]="generating"
+                 />
+          <label for="savingsAccountNumber" class="form-label">Savings Account Number</label>
+        </div>
+        <div class="p-2 my-2">
+          <label for="daysToSimulate" class="form-label"><span class="required">Days to Simulate</span>: 
+            <span class="fw-bold fs-6 text-primary">{{generateRequest.daysToSimulate}}</span></label>
+          <input id="daysToSimulate"
+                 class="form-range"
+                 type="range"
+                 placeholder="Days to Simulate"
+                 [(ngModel)]="generateRequest.daysToSimulate"
+                 [disabled]="generating"
+                 min="1"
+                 max="90"
+                 required
+                 />
+        </div>
+  
+        <div class="mt-5 text-center">
+          <button class="btn btn-primary btn-lg" [disabled]="generating" (click)="generateTransactions()">Generate Transactions
+            <span *ngIf="generating" class="spinner-border spinner-border-sm"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+</div>

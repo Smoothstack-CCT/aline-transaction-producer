@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GenerateRequest } from './interfaces/generate-request';
 import { TransactionService } from './services/transaction.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-transaction-generator',
+  templateUrl: './transaction-generator.component.html',
+  styleUrls: ['./transaction-generator.component.css']
 })
-export class AppComponent {
+export class TransactionGeneratorComponent {
 
   generating = false;
 
@@ -35,4 +35,5 @@ export class AppComponent {
       }
     });
   }
+
 }

@@ -1,7 +1,7 @@
 import { CardRequest } from "../models/card-request.model";
 import { TransactionService } from "./transaction.service";
 
-export class CardTransactionService extends TransactionService {
+export class CreditTransactionService extends TransactionService {
 
     constructor(serviceHost: string, private cardRequest: CardRequest) {
         super(serviceHost);

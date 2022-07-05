@@ -1,10 +1,12 @@
-import { AxiosTransactionPromise } from "../models/transaction.types";
 import { TransactionService } from "./transaction.service";
 
 export class AchTransactionService extends TransactionService {
 
-    constructor(serviceHost: string, private accountNumber: string) {
+    hasSavings = false;
+
+    constructor(serviceHost: string, private accountNumber: string, private savingsAccountNumber?: string) {
         super(serviceHost);
+        this.hasSavings = !!savingsAccountNumber;
     }
 
     deposit(options: {amount: number, date: Date}) {
@@ -47,6 +49,18 @@ export class AchTransactionService extends TransactionService {
             type: "PURCHASE",
             method: "ACH",
             ...options
+        });
+    }
+    
+    transferToSavings(options: { amount: number, date: Date }) {
+        if (!this.savingsAccountNumber) {
+            this.log.error('Savings account was not provided to the service.');
+            return null;
+        }
+        return this.transferFunds({
+            ...options,
+            fromAccountNumber: this.accountNumber,
+            toAccountNumber: this.savingsAccountNumber
         });
     }
 

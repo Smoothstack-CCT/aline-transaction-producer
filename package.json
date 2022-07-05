@@ -4,12 +4,13 @@
   "description": "Generate realistic bank account transactions for the Aline Financial REST API",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf dist/",
-    "copy-files": "copyfiles -u 1 src/**/*.html src/public/**/*.js dist/",
-    "build": "tsc",
-    "prestart": "npm run clean && npm run build && npm run copy-files",
+    "clean": "rimraf dist/ && echo 'Cleaned dist/ directory'",
+    "copy-ng-ui": "copyfiles -u 4 -f ./src/ui/transaction-generator/dist/transaction-generator/* ./dist/public && echo 'Copied UI to dist/public/ directory...'",
+    "build-ui": "cd ./src/ui/transaction-generator && npm run build && cd ../../../ && npm run copy-ng-ui",
+    "build": "tsc && npm run build-ui",
+    "prestart": "npm run clean && npm run build",
     "start": "node .",
-    "start:dev": "ts-node-dev --respawn ./src/index.ts",
+    "start:server": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "leandroyabut",

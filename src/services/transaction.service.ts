@@ -1,8 +1,9 @@
 import { CreateTransaction } from "../models/create-transaction.model";
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { LoggerUtil } from "../util/logger.util";
 import { TransactionResponse } from "../models/transaction-response.model";
 import { AxiosTransactionPromise } from "../models/transaction.types";
+import { TransferRequest } from "../models/transfer-request.model";
 
 
 export abstract class TransactionService {
@@ -13,6 +14,10 @@ export abstract class TransactionService {
 
     createTransaction(request: CreateTransaction): AxiosTransactionPromise {
         return axios.post<TransactionResponse>(`${this.serviceHost}/api/transactions`, request);
+    }
+
+    transferFunds(request: TransferRequest) {
+        return axios.post(`${this.serviceHost}/api/transactions/transfer`, request);
     }
 
     abstract deposit(options: { amount: number, date?: Date }): AxiosTransactionPromise;
