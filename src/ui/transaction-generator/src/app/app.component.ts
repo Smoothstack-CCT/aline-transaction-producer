@@ -9,30 +9,5 @@ import { TransactionService } from './services/transaction.service';
 })
 export class AppComponent {
 
-  generating = false;
-
-  generateRequest: GenerateRequest = {
-    startDate: (new Date()).toISOString().split('T')[0],
-    daysToSimulate: 5,
-    accountNumber: ''
-  };
   
-  
-  constructor(private transactionService: TransactionService) {}
-
-  generateTransactions() {
-    this.generating = true;
-    this.transactionService.generateTransactions(this.generateRequest).subscribe({
-      complete: () => {
-        this.generating = false;
-      },
-      next: () => {
-        this.generating = false;
-      },
-      error: () => {
-        this.generating = false;
-        console.error('Unable to generate transactions...');
-      }
-    });
-  }
 }

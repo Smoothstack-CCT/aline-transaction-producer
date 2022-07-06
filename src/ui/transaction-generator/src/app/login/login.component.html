@@ -4,17 +4,19 @@
 
         <h3 class="card-title text-center py-2">Admin Login</h3>
 
-        <form class="my-3">
+        <form class="my-3" (submit)="login()">
             
             <div class="form-floating my-2">
                 <input  id="username" 
                         type="text" placeholder="Username" 
+                        [(ngModel)]="loginForm.username"
                         class="form-control" />
                 <label for="username" class="form-label">Username</label>
             </div>
             <div class="form-floating my-2">
                 <input  id="password" 
                         type="password" placeholder="Password" 
+                        [(ngModel)]="loginForm.password"
                         class="form-control" />
                 <label for="password" class="form-label">Password</label>
             </div>

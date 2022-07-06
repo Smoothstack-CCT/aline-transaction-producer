@@ -1,6 +1,0 @@
-.required::after {
-    content: '*';
-    font-weight: 900;
-    color: #dc3545;
-    font-family: 'Courier New', Courier, monospace;
-}

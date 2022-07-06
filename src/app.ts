@@ -9,12 +9,14 @@ import { TransactionServices } from './models/transaction-services';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { argv, exit } from 'process';
+import jwtDecode from 'jwt-decode';
+
+const log = LoggerUtil.getLogger('Transaction Generator');
 
 checkArgs();
 
 const serviceHost = environment.serviceHost;
 const router = express.Router();
-const log = LoggerUtil.getLogger('Transaction Generator');
 
 if (!serviceHost) {
     log.error('The API host url is required to start this application.');
@@ -37,17 +39,41 @@ router.post('/login', async function(req: Request, res: Response) {
         return;
     }
 
-    const authRequest = req.body;
-    const authResponse = await axios.post(`${serviceHost}/api/login`, authRequest);
+    try {
+        const authRequest = req.body;
+        const authResponse = await axios.post(`${serviceHost}/login`, authRequest);
 
-    if (authResponse.status == 200) {
-        const bearerToken = authResponse.headers['authorization'];
-        res.setHeader('authorization', bearerToken);
-        res.sendStatus(200);
-    } else {
+        if (authResponse.status == 200) {
+            const bearerToken = authResponse.headers['authorization'];
+            validateJwt(bearerToken);
+            res.setHeader('authorization', bearerToken);
+            res.sendStatus(200);
+            log.info(`${authRequest.username} successfully logged in.`);
+        } else {
+            res.sendStatus(403);
+        }
+    } catch (e) {
+        log.error(e);
         res.sendStatus(403);
     }
 });
+
+function validateJwt(jwt: string) {
+    const {sub, authority, exp}: {
+        sub: string,
+        authority: string,
+        iat: number,
+        exp: number
+    } = jwtDecode(jwt);
+
+    const expDate = new Date(exp * 1000);
+    
+    if (authority !== 'administrator')
+        throw new Error(`User ${sub} is not an administrator.`);
+
+    if (dayjs(dayjs()).isAfter(dayjs(expDate)))
+        throw new Error('Token is expired. Please log in again.');
+}
 
 router.post('/generate-transactions', async function(req: Request, res: Response) {
 
@@ -86,9 +112,20 @@ router.post('/generate-transactions', async function(req: Request, res: Response
 
 });
 
+router.get('*', function(req: Request, res: Response) {
+    res.sendFile(path.join(path.join(publicDir, 'index.html')));
+});
+
 export { router };
 
 function checkArgs() {
     environment.port = argv[argv.indexOf('--port') + 1];
-    environment.serviceHost = argv[argv.indexOf('--api') + 1];
+    if (argv.indexOf('--api') >= 0) {
+        environment.serviceHost = argv[argv.indexOf('--api') + 1];
+    } else {
+        log.error('API url must be set using --api option.');
+        exit();
+    }
+
+    log.info(`Service host set to: ${environment.serviceHost}...`);
 }
