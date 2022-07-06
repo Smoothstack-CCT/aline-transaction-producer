@@ -1,3 +1,4 @@
 export const environment = {
-    serviceHost: 'http://localhost:8080'
+    serviceHost: '',
+    port: process.env.PORT || 8888
 };

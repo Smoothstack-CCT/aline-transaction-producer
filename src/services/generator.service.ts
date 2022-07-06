@@ -1,6 +1,4 @@
 import dayjs from 'dayjs';
-import { faker } from '@faker-js/faker';
-import { TransactionType } from '../models/transaction.types';
 import { TransactionService } from "./transaction.service";
 import { RandomDataUtil } from '../util/random-data.util';
 import { LoggerUtil } from '../util/logger.util';
@@ -73,13 +71,13 @@ export class GeneratorService {
 
     constructor(private transactionServices: TransactionServices, private dataUtil: RandomDataUtil) {} 
     
-    async generateTransactions(startingDate: Date, daysToSimulate: number) {
+    async generateTransactions(startingDate: Date) {
 
-        if (daysToSimulate == 0) return;
+        if (dayjs(startingDate).isSame(dayjs(), 'date')) return;
 
         await this.doTransactions(startingDate);
 
-        await this.generateTransactions(dayjs(startingDate).add(1, 'day').toDate(), daysToSimulate-1);
+        await this.generateTransactions(dayjs(startingDate).add(1, 'day').toDate());
     }
 
     async doTransactions(date: Date) {
