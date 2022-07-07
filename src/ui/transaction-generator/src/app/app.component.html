@@ -1,9 +1,11 @@
 <nav class="navbar navbar-light bg-light py-3 justify-content-between align-items-center">
   <a class="navbar-brand ms-2 h4" routerLink="/">Aline Financial</a>
-  
   <ul class="nav text-end me-2">
     <li class="nav-item">
-      <a class="nav-link" routerLink="/login">Login</a>
+      <a *ngIf="!loggedIn else logoutBtn" class="nav-link" routerLink="/login">Login</a>
+      <ng-template #logoutBtn>
+        <a class="nav-link" [style]="{ cursor: 'pointer' }" (click)="logout()">Log Out</a>
+      </ng-template>
     </li>
   </ul>
 </nav>

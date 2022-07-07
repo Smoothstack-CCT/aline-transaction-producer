@@ -46,14 +46,15 @@ router.post('/login', async function(req: Request, res: Response) {
         if (authResponse.status == 200) {
             const bearerToken = authResponse.headers['authorization'];
             validateJwt(bearerToken);
-            res.setHeader('authorization', bearerToken);
-            res.sendStatus(200);
+            res.setHeader('authorization', bearerToken)
+                .status(200)
+                .send({ message: 'success' });
             log.info(`${authRequest.username} successfully logged in.`);
         } else {
             res.sendStatus(403);
         }
     } catch (e) {
-        log.error(e);
+        log.error('Unable to login.');
         res.sendStatus(403);
     }
 });

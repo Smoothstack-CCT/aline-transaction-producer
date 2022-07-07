@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthRequest } from '../interfaces/auth-request';
 import { AuthService } from '../services/auth.service';
 
@@ -24,10 +24,14 @@ export class LoginComponent {
     this.loading = true;
     this.auth.login(this.loginForm)
       .subscribe({
-        next: this.auth.performLogin,
-        error: () => {
+        next: res => {
+          this.auth.performLogin(res);
+          this.loading = false;
+        },
+        error: (e) => {
           this.loading = false;
           console.error('Unable to login. Please try again.');
+          this.error = e;
         },
         complete: () => {
           this.loading = false;
