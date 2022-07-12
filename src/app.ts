@@ -78,6 +78,8 @@ function validateJwt(jwt: string) {
 
 router.post('/generate-transactions', async function(req: Request, res: Response) {
 
+    const { authorization } = req.headers;
+
     if (!req.body) {
         log.error('Body is empty. Cannot generate transactions with an empty request body.');
         res.sendStatus(400);
@@ -101,7 +103,9 @@ router.post('/generate-transactions', async function(req: Request, res: Response
     try {
         log.info('Generating transactions...');
 
-        await generatorService.generateTransactions(new Date(startDate));
+        generatorService.nextPayday = startDate;
+
+        await generatorService.generateTransactions(new Date(startDate), authorization);
         
         log.info('Finished generating transactions...');
 

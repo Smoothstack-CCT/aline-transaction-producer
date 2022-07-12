@@ -16,8 +16,12 @@ export abstract class TransactionService {
         return axios.post<TransactionResponse>(`${this.serviceHost}/api/transactions`, request);
     }
 
-    transferFunds(request: TransferRequest) {
-        return axios.post(`${this.serviceHost}/api/transactions/transfer`, request);
+    transferFunds(request: TransferRequest, bearerToken: string) {
+        return axios.post(`${this.serviceHost}/api/transactions/transfer`, request, {
+            headers: {
+                authorization: bearerToken
+            }
+        });
     }
 
     abstract deposit(options: { amount: number, date?: Date }): AxiosTransactionPromise;

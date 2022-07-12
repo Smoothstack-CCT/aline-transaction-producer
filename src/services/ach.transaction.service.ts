@@ -2,11 +2,12 @@ import { TransactionService } from "./transaction.service";
 
 export class AchTransactionService extends TransactionService {
 
-    hasSavings = false;
+    hasSavings: boolean;
 
     constructor(serviceHost: string, private accountNumber: string, private savingsAccountNumber?: string) {
         super(serviceHost);
         this.hasSavings = !!savingsAccountNumber;
+        console.log(this.hasSavings);
     }
 
     deposit(options: {amount: number, date: Date}) {
@@ -52,7 +53,7 @@ export class AchTransactionService extends TransactionService {
         });
     }
     
-    transferToSavings(options: { amount: number, date: Date }) {
+    transferToSavings(options: { amount: number, date: Date }, bearerToken: string) {
         if (!this.savingsAccountNumber) {
             this.log.error('Savings account was not provided to the service.');
             return null;
@@ -61,7 +62,7 @@ export class AchTransactionService extends TransactionService {
             ...options,
             fromAccountNumber: this.accountNumber,
             toAccountNumber: this.savingsAccountNumber
-        });
+        }, bearerToken);
     }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenerateRequest } from './interfaces/generate-request';
 import { TransactionService } from './services/transaction.service';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-transaction-generator',
@@ -12,8 +13,7 @@ export class TransactionGeneratorComponent {
   generating = false;
 
   generateRequest: GenerateRequest = {
-    startDate: (new Date()).toISOString().split('T')[0],
-    daysToSimulate: 5,
+    startDate: dayjs().add(-1, 'day').format('YYYY-MM-DD'),
     accountNumber: ''
   };
   
@@ -34,6 +34,10 @@ export class TransactionGeneratorComponent {
         console.error('Unable to generate transactions...');
       }
     });
+  }
+
+  get daysToSimulate(): number {
+    return dayjs().diff(this.generateRequest.startDate, 'days') || 1;
   }
 
 }

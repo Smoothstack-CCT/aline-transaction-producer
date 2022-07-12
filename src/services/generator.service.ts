@@ -67,20 +67,28 @@ export class GeneratorService {
         ];
     }
 
-    nextPayday = new Date();
+    private payday = new Date();
+
+    get nextPayday() {
+        return this.payday;
+    }
+
+    set nextPayday(date: Date) {
+        this.payday = date;
+    }
 
     constructor(private transactionServices: TransactionServices, private dataUtil: RandomDataUtil) {} 
     
-    async generateTransactions(startingDate: Date) {
+    async generateTransactions(startingDate: Date, bearerToken?: string) {
 
         if (dayjs(startingDate).isSame(dayjs(), 'date')) return;
 
-        await this.doTransactions(startingDate);
+        await this.doTransactions(startingDate, bearerToken);
 
-        await this.generateTransactions(dayjs(startingDate).add(1, 'day').toDate());
+        await this.generateTransactions(dayjs(startingDate).add(1, 'day').toDate(), bearerToken);
     }
 
-    async doTransactions(date: Date) {
+    async doTransactions(date: Date, bearerToken?: string) {
         let currDate = date;
 
         this.log.info('------------------------------------------------------------------');
@@ -97,11 +105,14 @@ export class GeneratorService {
 
             this.nextPayday = dayjs(this.nextPayday).add(2, 'week').toDate();
 
-            if (this.transactionServices.achService.hasSavings) {
+            if (this.transactionServices.achService.hasSavings && bearerToken) {
+                this.log.info(`Saving ${this.formatCurrency(savingsAmount)}. Transferring to savings account...`);
                 this.transactionServices.achService.transferToSavings({
                     amount: savingsAmount,
                     date
-                });
+                }, bearerToken);
+            } else {
+                this.log.warn(`Unable to deposit ${this.formatCurrency(savingsAmount)} into a savings account. Savings account was not provided or an admin user is not logged in.`);
             }
         }
 
@@ -115,7 +126,7 @@ export class GeneratorService {
                 purchasesTotal += data.amount;
             } catch(e: any) {
                 this.log.error('Unable to do transaction.');
-                this.log.error(e.data);
+                this.log.error(e);
             } finally {
                 currDate = dayjs(currDate).add(this.getRandomNum(1, 120), 'minute').toDate();
             }
@@ -169,8 +180,42 @@ export class GeneratorService {
 
         const service = this.randomTransactionService;
 
+        let amount: number;
+
+        switch (merchantType) {
+            
+            case 'GROCERY':
+                amount = this.getRandomNum(2500, 5000);
+                break;
+
+            case 'GAS':
+                amount = this.getRandomNum(2000, 9000);
+                break;
+
+            case 'CLOTHING':
+                amount = this.getRandomNum(200, 5000);
+                break;
+
+            case 'STORE':
+                amount = this.getRandomNum(500, 15000);
+                break;
+
+            case 'RESTAURANT':
+                amount = this.getRandomNum(500, 5000);
+                break;
+
+            case 'DRUG':
+                amount = this.getRandomNum(1000, 2500);
+                break;
+
+            default:
+                amount = this.getRandomNum(500, 10000);
+                break;
+
+        }
+
         return service.purchase({
-            amount: this.getRandomNum(500, 5000),
+            amount,
             description: `${merchantType} - purchase at ${merchantName}`,
             merchantCode,
             merchantName,
