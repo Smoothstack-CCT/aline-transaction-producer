@@ -51,6 +51,7 @@ router.post('/login', async function(req: Request, res: Response) {
                 .send({ message: 'success' });
             log.info(`${authRequest.username} successfully logged in.`);
         } else {
+            log.info(`${authRequest.username} attempted to login with incorrect username and password.`);
             res.sendStatus(403);
         }
     } catch (e) {
