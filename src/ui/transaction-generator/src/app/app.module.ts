@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { TransactionGeneratorComponent } from './transaction-generator.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
-import { AppIconsModule } from './app-icons.module';
 
 @NgModule({
   declarations: [
@@ -21,10 +20,12 @@ import { AppIconsModule } from './app-icons.module';
     HttpClientModule,
     FormsModule,
     RouterModule,
-    AppRoutingModule,
-    AppIconsModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+  }
+}

@@ -10,9 +10,9 @@
         <div class="mb-3 mt-4">
           <h6 class="text-primary">Start Date </h6>
           <p class="small text-secondary">
-            Enter a date in the past.
+            Enter a date in the past. 
           </p>
-          <p class="small text-secondary collapse">
+          <p class="small text-secondary collapse" id="startDateInfo">
             Transactions will be generated from the date you enter to today's date.
           </p>
         </div>
@@ -25,6 +25,8 @@
                  [(ngModel)]="generateRequest.startDate"
                  required
                  [disabled]="generating"
+                 [min]="minDate"
+                 [max]="maxDate"
                  />
           <label for="accountNumber" class="form-label required">Start Date</label>
         </div>
@@ -32,10 +34,7 @@
         <div class="mb-3 mt-4">
           <h6 class="text-primary">ACH Information</h6>
           <p class="small text-secondary">
-            Enter the member's primary checking and savings account information.
-          </p>
-          <p class="small text-secondary">
-            If a savings account number is not provided, portions of the bi-weekly paycheck will not be deposited to a savings account.
+            Enter the member's primary checking and savings account information. If a savings account number is not provided, portions of the bi-weekly paycheck will not be deposited to a savings account.
           </p>
         </div>
 

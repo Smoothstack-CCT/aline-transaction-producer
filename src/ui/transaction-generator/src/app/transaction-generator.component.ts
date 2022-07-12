@@ -10,6 +10,9 @@ import * as dayjs from 'dayjs';
 })
 export class TransactionGeneratorComponent {
 
+  minDate: string;
+  maxDate: string;
+
   generating = false;
 
   generateRequest: GenerateRequest = {
@@ -18,7 +21,10 @@ export class TransactionGeneratorComponent {
   };
   
   
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService) {
+    this.minDate = dayjs().add(-90, 'day').format('YYYY-MM-DD');
+    this.maxDate = dayjs().add(-1, 'day').format('YYYY-MM-DD');
+  }
 
   generateTransactions() {
     this.generating = true;
