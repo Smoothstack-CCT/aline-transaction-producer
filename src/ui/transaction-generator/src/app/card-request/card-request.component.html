@@ -1,0 +1,51 @@
+<div class="card">
+
+    <div class="card-body">
+        <div class="row my-2">
+            <div class="col">
+                <div class="form-floating">
+                    <select id="cardType{{index}}" class="form-select" placeholder="Card Type">
+                        <option value="">Select One</option>
+                        <option value="DEBIT">Debit</option>
+                        <option value="CREDIT">Credit</option>
+                    </select>
+                    <label class="form-label" for="cardType{{index}}">
+                        Card Type
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <div class="form-floating">
+                    <input id="cardNumber{{index}}" type="tel" class="form-control" placeholder="Card Number"/>
+                    <label class="form-label" for="cardNumber{{index}}">
+                        Card Number
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <div class="form-floating">
+                    <input id="cardExpDate{{index}}" type="tel" class="form-control" placeholder="Exp. Date"/>
+                    <label class="form-label" for="cardExpDate{{index}}">
+                        Exp. Date
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating">
+                    <input id="cardCvv{{index}}" type="tel" maxlength="3" class="form-control" placeholder="CVV"/>
+                    <label class="form-label" for="cardCvv{{index}}">
+                        CVV
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+
+</div>

@@ -10,10 +10,7 @@
         <div class="mb-3 mt-4">
           <h6 class="text-primary">Start Date </h6>
           <p class="small text-secondary">
-            Enter a date in the past. 
-          </p>
-          <p class="small text-secondary collapse" id="startDateInfo">
-            Transactions will be generated from the date you enter to today's date.
+            Enter a date in the past. Transactions will be generated from the date you enter to today's date.
           </p>
         </div>
 
@@ -58,6 +55,17 @@
                  [disabled]="generating"
                  />
           <label for="savingsAccountNumber" class="form-label">Savings Account Number</label>
+        </div>
+
+        <div class="mb-3 mt-4">
+          <h6 class="text-primary">Card Information</h6>
+          <p class="small text-secondary">
+            Add card information that will be used in generating transactions.
+          </p>
+        </div>
+
+        <div class="my-2">
+          <app-card-request></app-card-request>
         </div>
 
         <div class="p-2 mt-4 small">
